@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mechlaren - Sri Sairam Institute of Technology</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-dark: #0A0A0A;
+            --text-light: #F0F0F0;
+            --accent-orange: #FF8C00;
+            --accent-blue: #00BFFF;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .font-bebas {
+            font-family: 'Bebas Neue', sans-serif;
+        }
+        
+        /* Full-page background image with blur */
+        .background-image-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -20;
+            overflow: hidden;
+        }
+        
+        .background-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(4px) brightness(0.7);
+        }
+        
+        /* Ensure the canvas is between the image and content */
+        .fixed.top-0.left-0.w-full.h-full.-z-10 {
+            z-index: -10;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-pulse-light {
+            animation: pulseLight 2s infinite;
+        }
+
+        @keyframes pulseLight {
+            0%, 100% { box-shadow: 0 0 10px var(--accent-orange); }
+            50% { box-shadow: 0 0 20px var(--accent-orange), 0 0 40px var(--accent-orange); }
+        }
+
+        .drive-in-button {
+            background-color: var(--accent-orange);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .drive-in-button:hover {
+            background-color: #E67E22;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+    <div class="background-image-container">
+        <img src="images\images.jpeg" alt="Racing F1 Car Background">
+    </div>
+
+    <div class="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden">
+        <canvas id="race-canvas" class="w-full h-full"></canvas>
+    </div>
+
+    <section id="open-page" class="min-h-screen flex items-center justify-center text-center p-4 relative z-20 transition-opacity duration-1000">
+        <div class="animate-fade-in">
+            <h1 class="font-bebas text-6xl md:text-8xl lg:text-9xl text-white tracking-widest">
+                MECHLAREN'25
+            </h1>
+            <div class="mt-8">
+                <a href="home.html" class="drive-in-button animate-pulse-light">
+                    <span class="text-sm">Drive In</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const canvas = document.getElementById('race-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        let lines = [];
+        const numLines = 50;
+
+        for (let i = 0; i < numLines; i++) {
+            lines.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                speed: 1 + Math.random() * 4,
+                length: 10 + Math.random() * 30,
+                color: `rgba(255, 255, 255, ${0.1 + Math.random() * 0.4})`
+            });
+        }
+
+        function animateLines() {
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = 'transparent';
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                ctx.beginPath();
+                ctx.strokeStyle = line.color;
+                ctx.lineWidth = 1;
+                ctx.moveTo(line.x, line.y);
+                ctx.lineTo(line.x, line.y + line.length);
+                ctx.stroke();
+
+                line.y += line.speed;
+                if (line.y > height) {
+                    line.y = -line.length;
+                    line.x = Math.random() * width;
+                    line.speed = 1 + Math.random() * 4;
+                }
+            }
+            requestAnimationFrame(animateLines);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            lines = [];
+            for (let i = 0; i < numLines; i++) {
+                lines.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    speed: 1 + Math.random() * 4,
+                    length: 10 + Math.random() * 30,
+                    color: `rgba(255, 255, 255, ${0.1 + Math.random() * 0.4})`
+                });
+            }
+        });
+
+        animateLines();
+    </script>
+</body>
+</html>
