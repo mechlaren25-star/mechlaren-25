@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adzap - Mechlaren</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-dark: #0A0A0A;
+            --text-light: #F0F0F0;
+            --accent-orange: #FF8C00;
+            --accent-blue: #00BFFF;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .font-bebas {
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        .card-bg {
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Full-page background image with blur */
+        .background-image-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -20;
+            overflow: hidden;
+        }
+        
+        .background-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(4px) brightness(0.7);
+        }
+        
+        /* Ensure the canvas is between the image and content */
+        .fixed.top-0.left-0.w-full.h-full.-z-10 {
+            z-index: -10;
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+    <div class="background-image-container">
+        <img src="images\adzap.jpg" alt="Racing F1 Car Background">
+    </div>
+
+    <div class="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden">
+        <canvas id="race-canvas" class="w-full h-full"></canvas>
+    </div>
+    
+    <section id="adzap" class="min-h-screen p-8 md:p-16">
+        <div class="container mx-auto">
+            <a href="home.html#events" class="text-sm font-semibold text-gray-400 hover:text-orange-500 transition-colors block mb-8">
+                &larr; Back to Events
+            </a>
+            <h2 class="font-bebas text-5xl md:text-7xl text-white tracking-widest mb-8">
+                The Sponsor's Showcase
+            </h2>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="font-bebas text-3xl text-orange-500 mb-4">About the Event</h3>
+                    <p class="text-gray-300 mb-6">
+                        Get ready for the Sponsors Showcase, an exciting ADZAP-style event where you must sell the weirdest everyday objects with creativity, humor, and confidence! Pick a slip, prepare your pitch, and convince the audience like your life depends on it.
+                    </p>
+                    
+                    <h3 class="font-bebas text-3xl text-orange-500 mb-4">Rules & Guidelines</h3>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>Preparation Time: 4-5 mins| Pitch Time: 2-3 mins.</li>
+                        <li>Team members should not exceed 3.</li>
+                        <li>Language: English or Tamil.</li>
+                        <li>Judging: Creativity, Convincing power, Humor, Teamwork.</li>
+                        <li>No Vulgar/offensive content.</li>
+                        <li>Usuage of External props is not allowed.</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="card-bg p-8 rounded-2xl text-center mb-6">
+                        <h3 class="font-bebas text-3xl text-white mb-4">Registration</h3>
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfWWF36Ji0HG5vzKEmfu1mQLwis5GuXoJPDmNXo89Zr5-Ih0w/viewform?usp=header" target="_blank" class="inline-block bg-orange-600 text-white font-bold py-3 px-8 rounded-full uppercase shadow-lg hover:bg-orange-700 transition-all transform hover:scale-105">
+                            Register Now
+                        </a>
+                        <p class="text-sm text-gray-400 mt-2">Registration is required for all team members.</p>
+                    </div>
+                    
+                    <div class="card-bg p-8 rounded-2xl text-center">
+                        <h3 class="font-bebas text-3xl text-white mb-4">Race Officials</h3>
+                        <p class="text-lg font-semibold text-orange-500">Event Head</p>
+                        <p class="text-gray-300">Vaishnavi</p>
+                        <p class="text-gray-400 text-sm mb-4">+91 9344588247</p>
+                        
+                        <p class="text-lg font-semibold text-orange-500">Coordinator</p>
+                        <p class="text-gray-300">Sundaravalli</p>
+                        <p class="text-gray-400 text-sm">+91 9150456319</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center py-8 text-gray-500 text-sm">
+        &copy; <span id="current-year"></span> Sri Sairam Institute of Technology. All Rights Reserved.
+    </footer>
+    
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        const canvas = document.getElementById('race-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        let lines = [];
+        const numLines = 50;
+
+        for (let i = 0; i < numLines; i++) {
+            lines.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                speed: 1 + Math.random() * 4,
+                length: 10 + Math.random() * 30,
+                color: `rgba(255, 255, 255, ${0.1 + Math.random() * 0.4})`
+            });
+        }
+
+        function animateLines() {
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = 'transparent';
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                ctx.beginPath();
+                ctx.strokeStyle = line.color;
+                ctx.lineWidth = 1;
+                ctx.moveTo(line.x, line.y);
+                ctx.lineTo(line.x, line.y + line.length);
+                ctx.stroke();
+
+                line.y += line.speed;
+                if (line.y > height) {
+                    line.y = -line.length;
+                    line.x = Math.random() * width;
+                    line.speed = 1 + Math.random() * 4;
+                }
+            }
+            requestAnimationFrame(animateLines);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            lines = [];
+            for (let i = 0; i < numLines; i++) {
+                lines.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    speed: 1 + Math.random() * 4,
+                    length: 10 + Math.random() * 30,
+                    color: `rgba(255, 255, 255, ${0.1 + Math.random() * 0.4})`
+                });
+            }
+        });
+
+        animateLines();
+    </script>
+</body>
+</html>

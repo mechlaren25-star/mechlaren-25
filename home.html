@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mechlaren - Sri Sairam Institute of Technology</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-dark: #0A0A0A;
+            --text-light: #F0F0F0;
+            --accent-orange: #FF8C00;
+            --accent-blue: #00BFFF;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .font-bebas {
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        .card-bg {
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-bg:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Full-page background image with blur */
+        .background-image-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -20;
+            overflow: hidden;
+        }
+        
+        .background-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(4px) brightness(0.7);
+        }
+        
+        /* Ensure the canvas is between the image and content */
+        .fixed.top-0.left-0.w-full.h-full.-z-10 {
+            z-index: -10;
+        }
+
+        /* F1 themed countdown timer styles */
+        #f1-timer-container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+        
+        .f1-timer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .f1-timer-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 1rem 0.5rem;
+            border-radius: 12px;
+            border: 2px solid var(--accent-orange);
+            box-shadow: 0 0 15px rgba(255, 140, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .f1-timer-item:hover {
+            transform: scale(1.05);
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .f1-timer-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            line-height: 1;
+            color: white;
+        }
+
+        .f1-timer-unit {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-orange);
+            margin-top: 0.25rem;
+        }
+
+        @media (min-width: 768px) {
+            .f1-timer-value {
+                font-size: 4rem;
+            }
+            .f1-timer-unit {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+    <div class="background-image-container">
+        <img src="images/HD-wallpaper-racing-f1-mclaren-f1.jpg" alt="Racing F1 Car Background">
+    </div>
+
+    <div class="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden">
+        <canvas id="race-canvas" class="w-full h-full"></canvas>
+    </div>
+
+    <nav class="fixed top-0 w-full z-50 bg-gray-950/70 backdrop-blur-sm p-4 rounded-b-xl shadow-lg">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <a href="#hero" class="text-3xl font-bebas text-white tracking-widest hover:text-orange-500 transition-colors">
+                MECHLAREN'25
+            </a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="text-sm font-semibold tracking-wide uppercase hover:text-orange-500 transition-colors">The Paddock</a>
+                <a href="#events" class="text-sm font-semibold tracking-wide uppercase hover:text-orange-500 transition-colors">The Circuits</a>
+                <a href="#contact" class="text-sm font-semibold tracking-wide uppercase hover:text-orange-500 transition-colors">Race Control</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="hero" class="min-h-screen flex items-center justify-center text-center p-4 relative">
+        <div id="f1-timer-container" class="w-full max-w-2xl mx-auto">
+            <h1 class="font-bebas text-5xl md:text-7xl lg:text-8xl text-white tracking-widest leading-none">
+                MECHLAREN'25
+            </h1>
+            <p class="text-lg md:text-2xl mt-4 font-semibold text-gray-300">
+                EVERY SECOND COUNTS
+            </p>
+            <p class="mt-2 text-sm md:text-base font-light text-gray-400">
+                A National Level Technical Symposium by <span class="text-orange-500 font-bold">Sri Sairam Institute of Technology</span>
+            </p>
+            <p class="mt-8 text-md md:text-xl font-bold text-white uppercase">
+                Event Date: October 16, 2025
+            </p>
+            <div class="f1-timer-grid">
+                <div class="f1-timer-item">
+                    <div id="days" class="f1-timer-value">00</div>
+                    <div class="f1-timer-unit">Days</div>
+                </div>
+                <div class="f1-timer-item">
+                    <div id="hours" class="f1-timer-value">00</div>
+                    <div class="f1-timer-unit">Hours</div>
+                </div>
+                <div class="f1-timer-item">
+                    <div id="minutes" class="f1-timer-value">00</div>
+                    <div class="f1-timer-unit">Minutes</div>
+                </div>
+                <div class="f1-timer-item">
+                    <div id="seconds" class="f1-timer-value">00</div>
+                    <div class="f1-timer-unit">Seconds</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="min-h-screen flex items-center p-8 md:p-16">
+        <div class="container mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="font-bebas text-5xl md:text-7xl text-white tracking-widest mb-4">
+                    The Paddock
+                </h2>
+                <p class="text-lg md:text-xl text-gray-300">
+                    Mechlaren is the premier platform for aspiring engineers to showcase their technical prowess and passion for innovation. Like a well-oiled F1 pit crew, we bring together the brightest minds to compete, collaborate, and push the boundaries of what's possible.
+                </p>
+                <p class="mt-4 text-gray-400">
+                    This symposium is your chance to fine-tune your skills, engage with peers, and get recognized for your ingenuity. Get ready to rev your engines and embark on the race to innovation!
+                </p>
+            </div>
+            <div class="flex justify-center items-center">
+                <div class="w-full max-w-md h-72 md:h-96 rounded-3xl overflow-hidden shadow-2xl card-bg">
+                    <div class="w-full h-full bg-gradient-to-br from-orange-600 to-gray-800 flex items-center justify-center p-4">
+                        <span class="text-white text-lg text-center font-bebas tracking-wide">
+                            Your journey to victory starts here.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="events" class="min-h-screen p-8 md:p-16">
+        <div class="container mx-auto">
+            <h2 class="font-bebas text-5xl md:text-7xl text-white tracking-widest text-center mb-12">
+                The Circuits
+            </h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card-bg p-8 rounded-2xl text-center">
+                    <h3 class="font-bebas text-3xl text-orange-500 mb-2">The Grand Prix Of Ideas</h3>
+                    <p class="text-gray-400 text-sm mb-4">The ultimate test of knowledge and research.</p>
+                    <a href="paper_presentation.html" class="mt-4 inline-block bg-white/10 text-white py-2 px-6 rounded-full text-sm font-semibold hover:bg-white/20 transition-colors">
+                        Learn More
+                    </a>
+                </div>
+                <div class="card-bg p-8 rounded-2xl text-center">
+                    <h3 class="font-bebas text-3xl text-orange-500 mb-2">Chassis Design Challenge</h3>
+                    <p class="text-gray-400 text-sm mb-4">Design your way to victory with precision and creativity.</p>
+                    <a href="cad_modeling.html" class="mt-4 inline-block bg-white/10 text-white py-2 px-6 rounded-full text-sm font-semibold hover:bg-white/20 transition-colors">
+                        Learn More
+                    </a>
+                </div>
+                <div class="card-bg p-8 rounded-2xl text-center">
+                    <h3 class="font-bebas text-3xl text-orange-500 mb-2">Pole Position Quiz</h3>
+                    <p class="text-gray-400 text-sm mb-4">Challenge your wits in this rapid-fire quiz.</p>
+                    <a href="quiz.html" class="mt-4 inline-block bg-white/10 text-white py-2 px-6 rounded-full text-sm font-semibold hover:bg-white/20 transition-colors">
+                        Learn More
+                    </a>
+                </div>
+                <div class="card-bg p-8 rounded-2xl text-center">
+                    <h3 class="font-bebas text-3xl text-orange-500 mb-2">Advertisement Making Showcase</h3>
+                    <p class="text-gray-400 text-sm mb-4">Unleash your creativity and sell your ideas.</p>
+                    <a href="adzap.html" class="mt-4 inline-block bg-white/10 text-white py-2 px-6 rounded-full text-sm font-semibold hover:bg-white/20 transition-colors">
+                        Learn More
+                    </a>
+                </div>
+                <div class="card-bg p-8 rounded-2xl text-center">
+                    <h3 class="font-bebas text-3xl text-orange-500 mb-2">Paddock Pass Auction</h3>
+                    <p class="text-gray-400 text-sm mb-4">Strategize and build your dream team!</p>
+                    <a href="ipl_auction.html" class="mt-4 inline-block bg-white/10 text-white py-2 px-6 rounded-full text-sm font-semibold hover:bg-white/20 transition-colors">
+                        Learn More
+                    </a>
+                </div>
+                <div class="card-bg p-8 rounded-2xl text-center">
+                    <h3 class="font-bebas text-3xl text-white mb-2">Grand Prize Pool</h3>
+                    <p class="text-gray-400 text-sm mb-4">Compete for your share of the total prize money!</p>
+                    <p class="text-xl font-bold text-orange-500">
+                        ₹13500
+                    </p>
+                    <p class="text-sm text-gray-400 mt-2">More exciting prizes to be announced!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="min-h-screen flex items-center p-8 md:p-16">
+        <div class="container mx-auto text-center">
+            <h2 class="font-bebas text-5xl md:text-7xl text-white tracking-widest mb-12">
+                Race Control
+            </h2>
+            <div class="grid md:grid-cols-3 gap-8 items-start">
+
+                <div class="card-bg p-8 rounded-2xl text-left">
+                    <h3 class="font-bebas text-3xl text-orange-500 mb-4">Race Officials</h3>
+                    <ul class="list-none text-gray-300 divide-y divide-white/10">
+                        <li class="py-3">
+                            <p class="text-white font-semibold">THE PRESIDENT OF FIA</p>
+                            <p class="text-orange-500 text-sm uppercase">CEO</p>
+                            <p class="text-lg font-bold text-gray-100">Dr SAI PRAKASH LEO MUTHU</p>
+                        </li>
+                        <li class="py-3">
+                            <p class="text-white font-semibold">THE RACE DIRECTOR</p>
+                            <p class="text-orange-500 text-sm uppercase">PRINCIPAL</p>
+                            <p class="text-lg font-bold text-gray-100">Dr PALANIKUMAR K</p>
+                        </li>
+                        <li class="py-3">
+                            <p class="text-white font-semibold">THE CHIEF SCRUTINEE</p>
+                            <p class="text-orange-500 text-sm uppercase">HOD</p>
+                            <p class="text-lg font-bold text-gray-100">Dr MURALI S</p>
+                        </li>
+                        <li class="py-3">
+                            <p class="text-white font-semibold">CHIEF STEWARDS</p>
+                            <p class="text-orange-500 text-sm uppercase">FACULTY COORDINATORS</p>
+                            <p class="text-lg font-bold text-gray-100">Mr PON SHANMUGA KUMAR A & Mr JESWIN ARPUTHABALAN</p>
+                        </li>
+                        <li class="py-3">
+                            <p class="text-white font-semibold">THE ARENA PRINCIPAL</p>
+                            <p class="text-orange-500 text-sm uppercase">CHAIRMAN</p>
+                            <p class="text-lg font-bold text-gray-100">MANIGANDAN V</p>
+                        </li>
+                        <li class="py-3">
+                            <p class="text-white font-semibold">THE DATA STRATEGIEST</p>
+                            <p class="text-orange-500 text-sm uppercase">SECRETARY</p>
+                            <p class="text-lg font-bold text-gray-100">DEEPAK K</p>
+                        </li>
+                        <li class="py-3">
+                            <p class="text-white font-semibold">THE FINANCIAL CONTROLLER</p>
+                            <p class="text-orange-500 text-sm uppercase">TREASURER</p>
+                            <p class="text-lg font-bold text-gray-100">NAVEEN R</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-bg p-8 rounded-2xl text-left md:col-span-1">
+                    <h3 class="font-bebas text-3xl text-orange-500 mb-4">Contact Info</h3>
+                    <p class="text-gray-300 mb-2"><strong class="text-white">Email:</strong> mechlaren25@gmail.com</p>
+                    <p class="text-gray-300 mb-2"><strong class="text-white">Organising Head:</strong> Deepak</p>
+                    <p class="text-gray-300 mb-2"><strong class="text-white">Phone:</strong> +91 88259 15950</p>
+                    <p class="text-gray-300 mb-2">
+                        <strong class="text-white">Instagram:</strong> 
+                        <a href="https://www.instagram.com/mechlaren25/" target="_blank" class="hover:text-orange-500 transition-colors flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4zm9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8a1.25 1.25 0 0 1-1.25-1.25a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5a5 5 0 0 1-5 5a5 5 0 0 1-5-5a5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3"/>
+                            </svg>
+                            <span class="text-white text-lg font-bold">@Mechlaren25</span>
+                        </a>
+                    </p>
+                    <p class="text-gray-300 mb-2"><strong class="text-white">Address:</strong> Sri Sairam Institute of Technology, Chennai</p>
+                    
+                    <hr class="my-6 border-white/10">
+
+                    <h3 class="font-bebas text-3xl text-orange-500 mb-4">Our Location</h3>
+                    <div class="w-full h-48 rounded-2xl overflow-hidden shadow-xl">
+                        <a href="https://maps.google.com/?q=Sri+Sairam+Institute+of+Technology" target="_blank">
+                            <iframe src="https://maps.google.com/maps?q=Sri%20Sairam%20Institute%20of%20Technology,%20Chennai&t=&z=14&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </a>
+                    </div>
+                </div>
+    </section>
+
+    <footer class="bg-gray-900/80 text-gray-400 text-sm py-8">
+        <div class="container mx-auto text-center">
+            <p>© 2025 Mechlaren. All rights reserved. | Designed for Sri Sairam Institute of Technology - Mechanical Department</p>
+        </div>
+    </footer>
+
+    <script>
+        // Set the date we're counting down to
+        const countDownDate = new Date("Oct 16, 2025 09:00:00").getTime();
+
+        // Update the countdown every 1 second
+        const x = setInterval(function() {
+
+            // Get the current date and time
+            const now = new Date().getTime();
+
+            // Find the distance between now and the countdown date
+            const distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes, and seconds
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the result in the corresponding elements
+            document.getElementById("days").innerHTML = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerHTML = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, '0');
+
+            // If the countdown is finished, write some text
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("days").innerHTML = "00";
+                document.getElementById("hours").innerHTML = "00";
+                document.getElementById("minutes").innerHTML = "00";
+                document.getElementById("seconds").innerHTML = "00";
+                // You can also change the text to "EXPIRED" or a similar message
+                // document.getElementById("f1-timer-container").innerHTML = "<h2 class='text-orange-500 font-bebas text-4xl mt-4'>THE RACE HAS BEGUN!</h2>";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
